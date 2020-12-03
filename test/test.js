@@ -15135,8 +15135,12 @@
         ? new Uint8Array([1])
         : { 'buffer': [1] };
 
-      var props = ['0', 'buffer', 'a'],
-          values = [[{ 'a': 1 }], typedArray, { 'a': [1] }],
+      var typedBigIntArray = BigUint64Array
+        ? new BigUint64Array([BigInt ? BigInt(1) : 1])
+        : { 'buffer': [BigInt ? BigInt(1) : 1] };
+
+      var props = ['0', 'buffer', 'buffer', 'a'],
+          values = [[{ 'a': 1 }], typedArray, typedBigIntArray, { 'a': [1] }],
           expected = lodashStable.map(values, stubTrue);
 
       var actual = lodashStable.map(values, function(value, index) {
@@ -15149,7 +15153,7 @@
         return (
           newValue !== value &&
           newSubValue !== subValue &&
-          lodashStable.isEqual(newValue, value)
+          _.isEqual(newValue, value)
         );
       });
 
